@@ -23,10 +23,10 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.yesButton
+import kotlinx.android.synthetic.main.activity_maps.*
+import org.jetbrains.anko.*
+import com.example.googlemap_tracking.R.drawable.ic_stop_black_24dp as ic_stop_black_24dp1
+import com.example.googlemap_tracking.R.drawable.ic_stop_black_24dp as drawableIc_stop_black_24dp
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -39,6 +39,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: MyLocationCallback
+
+    private var start = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         locationInit()
+
+        fab.setOnClickListener {
+            start = true
+
+        }
     }
 
 
