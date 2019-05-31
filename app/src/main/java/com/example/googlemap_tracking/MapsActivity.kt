@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -39,8 +41,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: MyLocationCallback
+    private lateinit var fab_open: Animation
+    private lateinit var fab_close: Animation
 
     private var start = false
+    private var isFabOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +61,51 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         locationInit()
 
-        fab.setOnClickListener {
-            start = true
+        fab()
 
+    }
+
+    fun fab() {
+        fabInit()
+
+        fab_main.setOnClickListener {
+            toggleFab()
+        }
+        fab_sub1.setOnClickListener {
+            toggleFab()
+        }
+        fab_sub2.setOnClickListener {
+            toggleFab()
         }
     }
 
+    @SuppressLint("ResourceType")
+    private fun fabInit() {
+        fab_open = AnimationUtils.loadAnimation(this, R.animator.fab_open)
+        fab_close = AnimationUtils.loadAnimation(this, R.animator.fab_close)
+
+    }
+
+    private fun toggleFab() {
+        if (isFabOpen) {
+            fab_main.setImageResource(R.drawable.ic_add_black_24dp)
+            fab_sub1.startAnimation(fab_close)
+            fab_sub2.startAnimation(fab_close)
+            fab_sub1.isClickable = false
+            fab_sub2.isClickable = false
+
+            isFabOpen = false
+
+        } else {
+            fab_main.setImageResource(R.drawable.ic_close_black_24dp)
+            fab_sub1.startAnimation(fab_open)
+            fab_sub2.startAnimation(fab_open)
+            fab_sub1.isClickable = true
+            fab_sub2.isClickable = true
+
+            isFabOpen = true
+        }
+    }
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
